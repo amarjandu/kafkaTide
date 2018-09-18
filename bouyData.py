@@ -1,4 +1,4 @@
-import time, urllib.request , json
+import time, urllib.request , json, pprint
 
 class bouyData:
     noaaURL = 'https://tidesandcurrents.noaa.gov/api/datagetter?'
@@ -14,7 +14,7 @@ class bouyData:
             waterTemp =  tempURL + '&product=water_temperature' 
             windTemp = tempURL + '&product=wind'
             self.urlDict = {'waterLevelTemp':waterLevelTemp,'waterTemp':waterTemp,'windTemp':windTemp}
-            if fetch == True:
+            if fetch == True:   
                 self.fetchUrl()
         
     def fetchUrl(self):
@@ -23,7 +23,10 @@ class bouyData:
                 if url != None:
                     try:
                         # dont know how to have
-                        self.data[url] = urllib.request.urlopen(self.urlDict[url]).read().decode("utf-8")
+                        self.data[url] = json.loads(urllib.request.urlopen(self.urlDict[url]).read().decode("utf-8"))
+                        if 'error' in self.data[url]:
+                            print('error hit')
+                            return -1
                         self.error = None
                     except urllib.error.URLError:
                         self.requestData = None
