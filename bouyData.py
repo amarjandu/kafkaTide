@@ -34,4 +34,4 @@ class bouyData:
 
     def getJson(self):
         if len(self.data) > 0:
-            return {json.dumps({self.id:self.data})}
+            return json.dumps(self.data)
